@@ -2,8 +2,8 @@
 
 import { addUser } from "@/app/service/addUser";
 import { getUsers } from "@/app/service/getUsers";
-import type { FormProps } from "antd";
 import { Button, Flex, Form, Input } from "antd";
+import { useRouter } from "next/navigation";
 
 type FieldType = {
   username?: string;
@@ -11,10 +11,34 @@ type FieldType = {
 };
 
 export const LoginAndRegisterForm = () => {
+  const router = useRouter();
   const [form] = Form.useForm<FieldType>();
 
-  const handleLogin: React.MouseEventHandler<HTMLButtonElement> = (event) => {
+  const verifyExistsUser = async (username: string) => {
+    // 登録済みかチェック
+  };
+
+  const handleLogin: React.MouseEventHandler<HTMLButtonElement> = async (
+    event
+  ) => {
     event.preventDefault();
+    form.submit();
+    const { username, password } = await form.validateFields().catch();
+    // どちらかが未入力
+    if (!username || !password) return;
+
+    const users = await getUsers();
+    const isExists = users.some(
+      ({ username: _username, password: _password }) =>
+        _username === username && _password === password
+    );
+    if (!isExists) {
+      alert(`ユーザー名またはパスワードが異なります`);
+      return;
+    }
+
+    alert(`ようこそ ${username} さん！`);
+    router.push("/recipe");
   };
   const handleRegister: React.MouseEventHandler<HTMLButtonElement> = async (
     event
@@ -25,9 +49,11 @@ export const LoginAndRegisterForm = () => {
     // どちらかが未入力
     if (!username || !password) return;
 
-    // 登録済みかチェック
     const users = await getUsers();
-    if (users.some(({ username: _username }) => _username === username)) {
+    const isExists = users.some(
+      ({ username: _username }) => _username === username
+    );
+    if (isExists) {
       alert(`ユーザー名はすでに登録済みです`);
       return;
     }
@@ -38,6 +64,7 @@ export const LoginAndRegisterForm = () => {
       password,
     });
     alert(`ようこそ ${username} さん！`);
+    router.push("/recipe");
   };
   return (
     <Form action="?" name="basic" autoComplete="off" form={form}>

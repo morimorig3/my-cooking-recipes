@@ -1,6 +1,3 @@
-import { Button } from "antd/es/radio";
-import { AddUserForm } from "./components/AddUserForm";
-import { GetUser } from "./components/GetUser";
 import { LoginAndRegisterForm } from "./components/LoginAndRegisterForm";
 import { Card, Flex } from "antd";
 
@@ -14,8 +11,6 @@ export default function Home() {
           </Card>
         </div>
       </Flex>
-      {/* <GetUser />
-      <AddUserForm /> */}
     </main>
   );
 }
