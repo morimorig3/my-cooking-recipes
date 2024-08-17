@@ -1,7 +1,4 @@
-import { GET } from "./route";
-
 export interface User {
-  name: string;
-  id: string;
+  username: string;
   password: string;
 }
