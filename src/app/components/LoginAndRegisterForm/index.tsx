@@ -5,6 +5,7 @@ import { getUsers } from "@/app/service/getUsers";
 import { Button, Flex, Form, Input, Typography } from "antd";
 import { useRouter } from "next/navigation";
 import { atom, useAtom } from "jotai";
+import { usernameAtom } from "@/app/jotai";
 
 const { Text } = Typography;
 
@@ -12,8 +13,6 @@ type FieldType = {
   username?: string;
   password?: string;
 };
-
-export const usernameAtom = atom("");
 
 export const LoginAndRegisterForm = () => {
   const [_, setUsername] = useAtom(usernameAtom);

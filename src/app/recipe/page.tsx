@@ -1,22 +1,20 @@
 "use client";
 
-import { useState, useEffect, Fragment } from "react";
+import { useEffect, Fragment } from "react";
 import { getRecipes } from "../service/getRecipes";
-import { Recipe } from "../api/recipes/types";
-import { Button, Card, Flex, Modal, Table, TableProps, Typography } from "antd";
+import type { Recipe } from "../api/recipes/types";
+import { Button, Flex, Modal, Table, TableProps, Typography } from "antd";
 import { StarFilled } from "@ant-design/icons";
-import { atom, useAtom } from "jotai";
-import { usernameAtom } from "../components/LoginAndRegisterForm";
+import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import {
   AddRecipeFormModal,
   isRecipeAddModalOpenAtom,
 } from "../components/AddRecipeFormModal";
 import { deleteRecipe } from "../service/deleteRecipe";
+import { recipesAtom, usernameAtom } from "../jotai";
 
 const { Title } = Typography;
-
-export const recipesAtom = atom<Recipe[]>([]);
 
 export default function Recipe() {
   const [modal, contextHolder] = Modal.useModal();

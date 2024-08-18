@@ -1,6 +1,6 @@
 "use client";
 
-import { recipesAtom } from "@/app/recipe/page";
+import { recipesAtom } from "@/app/jotai";
 import { addRecipe } from "@/app/service/addRecipe";
 import { Form, Input, Modal } from "antd";
 import { atom, useAtom } from "jotai";
