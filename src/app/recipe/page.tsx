@@ -1,19 +1,26 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { getRecipes } from "../service/getRecipes";
 import { Recipe } from "../api/recipes/types";
-import { Button, Flex, Modal, Table, TableProps, Typography } from "antd";
+import { Button, Card, Flex, Modal, Table, TableProps, Typography } from "antd";
 import { StarFilled } from "@ant-design/icons";
-import { useAtom } from "jotai";
+import { atom, useAtom } from "jotai";
 import { usernameAtom } from "../components/LoginAndRegisterForm";
 import { useRouter } from "next/navigation";
+import {
+  AddRecipeFormModal,
+  isRecipeAddModalOpenAtom,
+} from "../components/AddRecipeFormModal";
 
 const { Title } = Typography;
 
+export const recipesAtom = atom<Recipe[]>([]);
+
 export default function Recipe() {
-  const [recipes, setRecipes] = useState<Recipe[]>();
+  const [recipes, setRecipes] = useAtom(recipesAtom);
   const [username, setUsername] = useAtom(usernameAtom);
+  const [_, setIsRecipeAddModalOpen] = useAtom(isRecipeAddModalOpenAtom);
   const router = useRouter();
 
   const handleLogout = () => {
@@ -37,13 +44,19 @@ export default function Recipe() {
 
   return (
     <main>
+      <AddRecipeFormModal username={username} />
       <Flex vertical gap={16} style={{ padding: 24 }}>
         <Flex align="center" justify="space-between">
           <Title level={1} style={{ margin: 0, fontSize: 20 }}>
             {username}さん のレシピ一覧
           </Title>
           <Flex gap={8}>
-            <Button type="primary">追加</Button>
+            <Button
+              type="primary"
+              onClick={() => setIsRecipeAddModalOpen(true)}
+            >
+              追加
+            </Button>
             <Button type="default" onClick={handleLogout}>
               ログアウト
             </Button>
@@ -85,12 +98,15 @@ const columns: TableProps<Recipe>["columns"] = [
     title: "Rank",
     key: "rank",
     dataIndex: "rank",
-    render: (count) => (
-      <>
-        {Array.from({ length: Number(count) }).map(() => (
-          <StarFilled style={{ color: "#FC0" }} />
+    render: (count, record) => (
+      <Fragment>
+        {Array.from({ length: Number(count) }).map((_, index) => (
+          <StarFilled
+            key={`${record.name}${record.rank}${index}`}
+            style={{ color: "#FC0" }}
+          />
         ))}
-      </>
+      </Fragment>
     ),
   },
 ];

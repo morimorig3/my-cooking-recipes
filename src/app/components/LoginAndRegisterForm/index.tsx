@@ -2,9 +2,11 @@
 
 import { addUser } from "@/app/service/addUser";
 import { getUsers } from "@/app/service/getUsers";
-import { Button, Flex, Form, Input } from "antd";
+import { Button, Flex, Form, Input, Typography } from "antd";
 import { useRouter } from "next/navigation";
 import { atom, useAtom } from "jotai";
+
+const { Text } = Typography;
 
 type FieldType = {
   username?: string;
@@ -75,27 +77,31 @@ export const LoginAndRegisterForm = () => {
         name="username"
         rules={[{ required: true, message: "ユーザー名を入力してください" }]}
       >
-        <Input />
+        <Input placeholder="sampleuser" />
       </Form.Item>
       <Form.Item<FieldType>
         label="パスワード"
         name="password"
         rules={[{ required: true, message: "パスワードを入力してください" }]}
       >
-        <Input.Password />
+        <Input.Password placeholder="samplepassword" />
       </Form.Item>
       <Flex justify="center" gap={16}>
-        <Form.Item style={{ marginBottom: 0 }}>
+        <Form.Item>
           <Button type="primary" htmlType="submit" onClick={handleLogin}>
             ログイン
           </Button>
         </Form.Item>
-        <Form.Item style={{ marginBottom: 0 }}>
+        <Form.Item>
           <Button type="default" htmlType="submit" onClick={handleRegister}>
             新規登録
           </Button>
         </Form.Item>
       </Flex>
+      <Text type="secondary">
+        ユーザ名: sampleuser パスワード： samplepassword
+        でログインすることができます
+      </Text>
     </Form>
   );
 };
