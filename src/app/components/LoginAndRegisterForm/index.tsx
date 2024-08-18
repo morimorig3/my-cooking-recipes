@@ -88,6 +88,19 @@ export const LoginAndRegisterForm = () => {
       </Form.Item>
       <Flex justify="center" gap={16}>
         <Form.Item>
+          <Button
+            type="default"
+            onClick={() => {
+              form.setFieldsValue({
+                username: "sampleuser",
+                password: "samplepassword",
+              });
+            }}
+          >
+            サンプルでログイン
+          </Button>
+        </Form.Item>
+        <Form.Item>
           <Button type="primary" htmlType="submit" onClick={handleLogin}>
             ログイン
           </Button>
