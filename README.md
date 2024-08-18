@@ -1,5 +1,7 @@
 # レシピ管理アプリ
 
+https://github.com/user-attachments/assets/66541c6c-859f-40c6-959a-a805c755bb0d
+
 [デモ](https://my-cooking-recipes.vercel.app/)
 
 ## 技術目標
