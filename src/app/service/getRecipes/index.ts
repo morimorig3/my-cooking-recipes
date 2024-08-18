@@ -1,10 +1,9 @@
 import { Recipe } from "@/app/api/recipes/types";
-import { User } from "@/app/api/users/types";
 import { QueryResult } from "@vercel/postgres";
 
-export const getRecipes = async (user: User) => {
+export const getRecipes = async (username: string) => {
   try {
-    const response = await fetch(`/api/recipes/${user.username}`);
+    const response = await fetch(`/api/recipes/${username}`);
 
     const data: QueryResult<Recipe> = await response.json();
     return data.rows;

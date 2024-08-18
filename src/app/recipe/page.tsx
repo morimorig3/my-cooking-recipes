@@ -3,21 +3,36 @@
 import { useState, useEffect } from "react";
 import { getRecipes } from "../service/getRecipes";
 import { Recipe } from "../api/recipes/types";
-import { Button, Flex, Space, Table, TableProps, Typography } from "antd";
+import { Button, Flex, Modal, Table, TableProps, Typography } from "antd";
 import { StarFilled } from "@ant-design/icons";
+import { useAtom } from "jotai";
+import { usernameAtom } from "../components/LoginAndRegisterForm";
+import { useRouter } from "next/navigation";
 
 const { Title } = Typography;
 
 export default function Recipe() {
   const [recipes, setRecipes] = useState<Recipe[]>();
+  const [username, setUsername] = useAtom(usernameAtom);
+  const router = useRouter();
+
+  const handleLogout = () => {
+    setUsername("");
+    router.push("/");
+  };
 
   useEffect(() => {
-    getRecipes({
-      username: "morishita",
-      password: "morishita",
-    }).then((data) => {
-      setRecipes(data);
-    });
+    if (username) {
+      getRecipes(username).then((data) => {
+        setRecipes(data);
+      });
+    }
+  }, [username]);
+
+  useEffect(() => {
+    if (!username) {
+      router.push("/");
+    }
   }, []);
 
   return (
@@ -25,9 +40,14 @@ export default function Recipe() {
       <Flex vertical gap={16} style={{ padding: 24 }}>
         <Flex align="center" justify="space-between">
           <Title level={1} style={{ margin: 0, fontSize: 20 }}>
-            レシピ一覧
+            {username}さん のレシピ一覧
           </Title>
-          <Button type="primary">追加</Button>
+          <Flex gap={8}>
+            <Button type="primary">追加</Button>
+            <Button type="default" onClick={handleLogout}>
+              ログアウト
+            </Button>
+          </Flex>
         </Flex>
         <Table
           bordered

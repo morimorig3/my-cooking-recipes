@@ -4,13 +4,17 @@ import { addUser } from "@/app/service/addUser";
 import { getUsers } from "@/app/service/getUsers";
 import { Button, Flex, Form, Input } from "antd";
 import { useRouter } from "next/navigation";
+import { atom, useAtom } from "jotai";
 
 type FieldType = {
   username?: string;
   password?: string;
 };
 
+export const usernameAtom = atom("");
+
 export const LoginAndRegisterForm = () => {
+  const [_, setUsername] = useAtom(usernameAtom);
   const router = useRouter();
   const [form] = Form.useForm<FieldType>();
 
@@ -34,6 +38,7 @@ export const LoginAndRegisterForm = () => {
     }
 
     alert(`ようこそ ${username} さん！`);
+    setUsername(username);
     router.push("/recipe");
   };
   const handleRegister: React.MouseEventHandler<HTMLButtonElement> = async (
@@ -60,6 +65,7 @@ export const LoginAndRegisterForm = () => {
       password,
     });
     alert(`ようこそ ${username} さん！`);
+    setUsername(username);
     router.push("/recipe");
   };
   return (
