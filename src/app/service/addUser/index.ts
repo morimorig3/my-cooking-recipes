@@ -8,10 +8,8 @@ export const addUser = async (user: User) => {
       body: JSON.stringify(user),
     });
 
-    const data: {
-      users: QueryResult<User>;
-    } = await response.json();
-    return data.users.rows;
+    const data: QueryResult<User> = await response.json();
+    return data.rows;
   } catch (error) {
     console.error(error);
     return [];

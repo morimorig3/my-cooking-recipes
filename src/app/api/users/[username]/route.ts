@@ -2,15 +2,6 @@ import { sql } from "@vercel/postgres";
 import { NextRequest, NextResponse } from "next/server";
 import { User } from "../types";
 
-export async function GET() {
-  try {
-    const users = await sql<User>`SELECT * FROM Users;`;
-    return NextResponse.json({ users }, { status: 200 });
-  } catch (error) {
-    return NextResponse.json({ error }, { status: 500 });
-  }
-}
-
 export async function POST(request: NextRequest) {
   const { username = "", password = "" } = await request.json();
   try {
@@ -25,8 +16,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error }, { status: 500 });
   }
 
-  const users = await sql<User>`SELECT * FROM Users;`;
-  return NextResponse.json({ users }, { status: 200 });
+  const results = await sql<User>`SELECT * FROM Users;`;
+  return NextResponse.json(results, { status: 200 });
 }
 
 export async function DELETE(
@@ -34,8 +25,8 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    const users = await sql<User>`SELECT * FROM Users;`;
-    return NextResponse.json({ users }, { status: 200 });
+    const results = await sql<User>`SELECT * FROM Users;`;
+    return NextResponse.json(results, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
   }

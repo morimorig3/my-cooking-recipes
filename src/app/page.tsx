@@ -6,7 +6,7 @@ export default function Home() {
     <main>
       <Flex align="center" justify="center" style={{ minHeight: "100dvh" }}>
         <div>
-          <Card title="ログイン" style={{ width: 300 }}>
+          <Card title="ログイン" style={{ width: 400 }}>
             <LoginAndRegisterForm />
           </Card>
         </div>

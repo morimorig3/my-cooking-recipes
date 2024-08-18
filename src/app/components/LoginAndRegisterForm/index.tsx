@@ -14,10 +14,6 @@ export const LoginAndRegisterForm = () => {
   const router = useRouter();
   const [form] = Form.useForm<FieldType>();
 
-  const verifyExistsUser = async (username: string) => {
-    // 登録済みかチェック
-  };
-
   const handleLogin: React.MouseEventHandler<HTMLButtonElement> = async (
     event
   ) => {
