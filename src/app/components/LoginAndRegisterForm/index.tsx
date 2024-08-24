@@ -2,10 +2,11 @@
 
 import { addUser } from "@/app/service/addUser";
 import { getUsers } from "@/app/service/getUsers";
-import { Button, Flex, Form, Input, Typography } from "antd";
+import { Button, Flex, Form, Input, Modal, Typography } from "antd";
 import { useRouter } from "next/navigation";
-import { atom, useAtom } from "jotai";
+import { useAtom } from "jotai";
 import { usernameAtom } from "@/app/jotai";
+import { Fragment, useState } from "react";
 
 const { Text } = Typography;
 
@@ -16,6 +17,7 @@ type FieldType = {
 
 export const LoginAndRegisterForm = () => {
   const [_, setUsername] = useAtom(usernameAtom);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const [form] = Form.useForm<FieldType>();
 
@@ -28,6 +30,7 @@ export const LoginAndRegisterForm = () => {
     // どちらかが未入力
     if (!username || !password) return;
 
+    setIsLoading(true);
     const users = await getUsers();
     const isExists = users.some(
       ({ username: _username, password: _password }) =>
@@ -35,6 +38,7 @@ export const LoginAndRegisterForm = () => {
     );
     if (!isExists) {
       alert(`ユーザー名またはパスワードが異なります`);
+      setIsLoading(false);
       return;
     }
 
@@ -69,6 +73,7 @@ export const LoginAndRegisterForm = () => {
     setUsername(username);
     router.push("/recipe");
   };
+
   return (
     <Form action="?" name="basic" autoComplete="off" form={form}>
       <Form.Item<FieldType>
@@ -100,7 +105,12 @@ export const LoginAndRegisterForm = () => {
           </Button>
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit" onClick={handleLogin}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            onClick={handleLogin}
+            loading={isLoading}
+          >
             ログイン
           </Button>
         </Form.Item>
